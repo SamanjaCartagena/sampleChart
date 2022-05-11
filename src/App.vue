@@ -1,17 +1,48 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+<div>
+    <router-view></router-view>
+   <h1>{{this.$store.state.names}}</h1>   
+    
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+//import MetersPage from './components/MetersPage.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+  },
+
+  data(){
+    return{
+    
+    }
+  },
+  async created(){
+    try{
+      const res= await axios.get(`http://localhost:8081/api/`)
+      this.names= res.data.gaugeMetersNames;
+      this.gaugeData= res.data.apexGaugeChartData[0].TE_KW_BM_01PWR_ELEC_K.value
+     console.log(this.gaugeData)      
+    }catch(e){
+      console.log(e)
+    }
+    
+    console.log(this.names.length)
+    if(this.names.length >0){
+      for(let i=0; i<this.names.length; i++){
+        this.meters.push(this.names[i])
+      }
+    }
+  },
+  
+ methods:{
+    
+ },
+      
+
   }
-}
+
 </script>
 
 <style>
